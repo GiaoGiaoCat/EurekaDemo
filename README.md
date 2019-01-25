@@ -1,5 +1,11 @@
 # README
 
+## 咋用
+
+1. git clone 代码
+2. bundle 安装 gem
+3. rails s 启动服务
+
 ## 1月26日更新
 
 * 使用 middleware 实现了 health 和 info
