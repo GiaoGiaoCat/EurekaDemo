@@ -5,12 +5,7 @@
 # https://github.com/thoughtbot/clearance/blob/master/lib/clearance/configuration.rb
 module EurekaRuby
   class Configuration
-    attr_accessor :eureka_url
-    attr_accessor :app_id
-    attr_accessor :host_name
-    attr_accessor :ip_addr
-    attr_accessor :port
-    attr_accessor :scheme
+    %i(eureka_url app_id host_name ip_addr port scheme).each { |attr| attr_accessor attr }
 
     def initialize
       @port = 3000
@@ -25,7 +20,7 @@ module EurekaRuby
         'apps/' + EurekaRuby.configuration.app_id + '/' + EurekaRuby.configuration.instance_id
     end
 
-    def register_application_instance_url
+    def application_url
       EurekaRuby.configuration.eureka_url +
         'apps/' + EurekaRuby.configuration.app_id
     end
@@ -46,8 +41,8 @@ module EurekaRuby
           statusPageUrl: "#{scheme}://#{ip_addr}:#{port}/info",
           homePageUrl: "#{scheme}://#{ip_addr}:#{port}/",
           dataCenterInfo: {
-              "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
-              name: "MyOwn"
+            "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+            name: "MyOwn"
           }
         }
       }

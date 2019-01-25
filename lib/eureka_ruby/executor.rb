@@ -26,7 +26,7 @@ module EurekaRuby
 
       def register_application_instance
         post(
-          EurekaRuby.configuration.register_application_instance_url,
+          EurekaRuby.configuration.application_url,
           EurekaRuby.configuration.register_payload
         )
       end
