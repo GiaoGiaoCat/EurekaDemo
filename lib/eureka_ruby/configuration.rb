@@ -10,6 +10,7 @@ module EurekaRuby
     attr_accessor :host_name
     attr_accessor :ip_addr
     attr_accessor :port
+    attr_accessor :scheme
 
     def initialize
       @port = 3000
@@ -17,6 +18,39 @@ module EurekaRuby
 
     def instance_id
       "#{host_name}:#{ip_addr}:#{port}"
+    end
+
+    def instance_url
+      EurekaRuby.configuration.eureka_url +
+        'apps/' + EurekaRuby.configuration.app_id + '/' + EurekaRuby.configuration.instance_id
+    end
+
+    def register_application_instance_url
+      EurekaRuby.configuration.eureka_url +
+        'apps/' + EurekaRuby.configuration.app_id
+    end
+
+    def register_payload
+      {
+        instance: {
+          instanceId: instance_id,
+          hostName: host_name,
+          app: app_id,
+          ipAddr: ip_addr,
+          status: "UP",
+          vipAddress: "com.automationrhapsody.eureka.app",
+          secureVipAddress: "com.automationrhapsody.eureka.app",
+          port: { "$": port, "@enabled": "true" },
+          securePort: { "$": "8443", "@enabled": "false" },
+          healthCheckUrl: "#{scheme}://#{ip_addr}:#{port}/health",
+          statusPageUrl: "#{scheme}://#{ip_addr}:#{port}/info",
+          homePageUrl: "#{scheme}://#{ip_addr}:#{port}/",
+          dataCenterInfo: {
+              "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+              name: "MyOwn"
+          }
+        }
+      }
     end
   end
 

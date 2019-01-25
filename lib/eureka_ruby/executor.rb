@@ -1,27 +1,38 @@
 require 'eureka_ruby/http_client'
 require 'net/http'
 require 'uri'
+require 'json'
 
 module EurekaRuby
   class Executor
     include HttpClient
 
     def run(action_type)
-      raise 'Unknow message type' unless [:keep_living].include?(action_type)
+      raise 'Unknow message type' unless [:send_heartbeat, :register, :deregister].include?(action_type)
       case action_type
-      when :keep_living
-        keep_living
+      when :send_heartbeat
+        send_heartbeat
+      when :register
+        register_application_instance
+      when :deregister
+        deregister_application_instance
       end
     end
 
     private
-      def keep_living
-        put(keep_living_url)
+      def send_heartbeat
+        put EurekaRuby.configuration.instance_url
       end
 
-      def keep_living_url
-        EurekaRuby.configuration.eureka_url +
-          'apps/' + EurekaRuby.configuration.app_id + '/' + EurekaRuby.configuration.instance_id
+      def register_application_instance
+        post(
+          EurekaRuby.configuration.register_application_instance_url,
+          EurekaRuby.configuration.register_payload
+        )
+      end
+
+      def deregister_application_instance
+        delete EurekaRuby.configuration.instance_url
       end
   end
 end

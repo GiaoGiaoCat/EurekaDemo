@@ -4,4 +4,5 @@ EurekaRuby.configure do |config|
   config.host_name = '192.168.74.4'
   config.ip_addr = '192.168.74.4'
   config.port = '3000'
+  config.scheme = 'http'
 end
