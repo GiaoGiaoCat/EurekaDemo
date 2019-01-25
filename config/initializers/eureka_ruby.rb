@@ -12,6 +12,9 @@ EurekaRuby.configure do |config|
   config.info_response = '{ "author" => "Victor", "language" => "Ruby" }'
 end
 
+# Register Instance
+# EurekaRuby.executor.run(:register)
+
 # Keep Living
 # Thread.new do
 #   loop do
@@ -20,6 +23,3 @@ end
 #     sleep 30
 #   end
 # end
-
-# Register Instance
-# EurekaRuby.executor.run(:register)
