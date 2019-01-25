@@ -1,1 +1,0 @@
-EurekaRuby.executor.run(:register)

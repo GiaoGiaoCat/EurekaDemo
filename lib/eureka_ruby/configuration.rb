@@ -6,8 +6,14 @@
 module EurekaRuby
   class Configuration
     %i(eureka_url app_id host_name ip_addr port scheme).each { |attr| attr_accessor attr }
+    %i(health_path health_response health_headers).each { |attr| attr_accessor attr }
+    %i(info_path info_response).each { |attr| attr_accessor attr }
 
     def initialize
+      @health_path = 'health'
+      @health_response = 'OK'
+      @health_headers = {"Content-Type" => "text/plain"}
+      @info_path = 'info'
       @port = 3000
     end
 
