@@ -1,11 +1,15 @@
 require 'eureka_ruby/http_client'
-require 'net/http'
-require 'uri'
-require 'json'
 
 module EurekaRuby
   class Executor
-    include HttpClient
+    attr_reader :client
+
+    def initialize
+      api_base = EurekaRuby.configuration.eureka_url
+      timeout = 30
+      skip_verify_ssl = EurekaRuby.configuration.skip_verify_ssl
+      @client = HttpClient.new(api_base, timeout, skip_verify_ssl)
+    end
 
     def run(action_type)
       raise 'Unknow message type' unless [:send_heartbeat, :register, :deregister].include?(action_type)
@@ -21,18 +25,15 @@ module EurekaRuby
 
     private
       def send_heartbeat
-        put EurekaRuby.configuration.instance_url
+        client.put EurekaRuby.configuration.instance_path
       end
 
       def register_application_instance
-        post(
-          EurekaRuby.configuration.application_url,
-          EurekaRuby.configuration.register_payload
-        )
+        client.post EurekaRuby.configuration.application_path, EurekaRuby.configuration.register_payload
       end
 
       def deregister_application_instance
-        delete EurekaRuby.configuration.instance_url
+        client.delete EurekaRuby.configuration.instance_path
       end
   end
 end

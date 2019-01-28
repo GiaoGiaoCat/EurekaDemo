@@ -1,33 +1,37 @@
+require 'http'
+
 module EurekaRuby
-  module HttpClient
+  class HttpClient
+    attr_reader :base, :ssl_context, :httprb
+
+    def initialize(base, timeout, skip_verify_ssl)
+      @base = base
+      @httprb = HTTP.timeout(write: timeout, connect: timeout, read: timeout)
+      @ssl_context = OpenSSL::SSL::SSLContext.new
+      @ssl_context.ssl_version = :TLSv1
+      @ssl_context.verify_mode = OpenSSL::SSL::VERIFY_NONE if skip_verify_ssl
+    end
+
+    def get(path)
+      request(path) { |url| httprb.get(url, ssl_context: ssl_context) }
+    end
+
+    def post(path, payload = {})
+      request(path) { |url| httprb.post(url, json: payload, ssl_context: ssl_context) }
+    end
+
+    def put(path, payload = {})
+      request(path) { |url| httprb.put(url, json: payload, ssl_context: ssl_context) }
+    end
+
+    def delete(path)
+      request(path) { |url| httprb.delete(url, ssl_context: ssl_context) }
+    end
 
     private
 
-    def put(url, payload = {})
-      uri = URI(url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Put.new(uri.path)
-      response = http.request(request) # the actual PUT request
-    end
-
-    def get(url)
-      uri = URI(url)
-      response = Net::HTTP.get(uri)
-    end
-
-    def post(url, payload = {})
-      uri = URI(url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
-      request.body = payload.to_json
-      response = http.request(request)
-    end
-
-    def delete(url)
-      uri = URI(url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Delete.new(uri.path)
-      response = http.request(request)
+    def request(path)
+      yield("#{base}#{path}")
     end
   end
 end

@@ -10,16 +10,17 @@ EurekaRuby.configure do |config|
   # config.health_headers = '{"Content-Type" => "text/plain"}'
   # config.info_path = 'info'
   config.info_response = '{ "author" => "Victor", "language" => "Ruby" }'
+  config.skip_verify_ssl = true
 end
 
 # Register Instance
-# EurekaRuby.executor.run(:register)
+EurekaRuby.executor.run(:register)
 
 # Keep Living
-# Thread.new do
-#   loop do
-#     executor = EurekaRuby.executor
-#     executor.run(:send_heartbeat)
-#     sleep 30
-#   end
-# end
+Thread.new do
+  loop do
+    executor = EurekaRuby.executor
+    executor.run(:send_heartbeat)
+    sleep 30
+  end
+end

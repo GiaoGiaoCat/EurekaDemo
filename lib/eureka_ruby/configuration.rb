@@ -8,6 +8,7 @@ module EurekaRuby
     %i(eureka_url app_id host_name ip_addr port scheme).each { |attr| attr_accessor attr }
     %i(health_path health_response health_headers).each { |attr| attr_accessor attr }
     %i(info_path info_response).each { |attr| attr_accessor attr }
+    attr_accessor :skip_verify_ssl
 
     def initialize
       @health_path = 'health'
@@ -21,14 +22,12 @@ module EurekaRuby
       "#{host_name}:#{ip_addr}:#{port}"
     end
 
-    def instance_url
-      EurekaRuby.configuration.eureka_url +
-        'apps/' + EurekaRuby.configuration.app_id + '/' + EurekaRuby.configuration.instance_id
+    def instance_path
+        'apps/' + app_id + '/' + instance_id
     end
 
-    def application_url
-      EurekaRuby.configuration.eureka_url +
-        'apps/' + EurekaRuby.configuration.app_id
+    def application_path
+        'apps/' + app_id
     end
 
     def register_payload
