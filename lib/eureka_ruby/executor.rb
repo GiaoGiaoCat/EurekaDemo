@@ -7,7 +7,7 @@ module EurekaRuby
     def initialize
       api_base = EurekaRuby.configuration.eureka_url
       timeout = 30
-      skip_verify_ssl = EurekaRuby.configuration.skip_verify_ssl
+      skip_verify_ssl = EurekaRuby.configuration.scheme == 'http'
       @client = HttpClient.new(api_base, timeout, skip_verify_ssl)
     end
 

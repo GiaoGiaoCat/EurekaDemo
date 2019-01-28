@@ -1,16 +1,15 @@
 EurekaRuby.configure do |config|
-  config.eureka_url = 'http://192.168.74.182:8701/eureka/'
-  config.app_id = 'DEMO-RUBY'
-  config.host_name = '192.168.74.46'
-  config.ip_addr = '192.168.74.46'
-  # config.port = '3000'
-  config.scheme = 'http'
-  # config.health_path = 'health'
-  # config.health_response = 'OK'
-  # config.health_headers = '{"Content-Type" => "text/plain"}'
-  # config.info_path = 'info'
-  config.info_response = '{ "author" => "Victor", "language" => "Ruby" }'
-  config.skip_verify_ssl = true
+    config.eureka_url      = 'http://192.168.74.182:8701/eureka/'
+    config.app_id          = 'VICTOR-RUBY'
+    config.host_name       = '192.168.74.46'
+    config.ip_addr         = '192.168.74.46'
+    config.port            = '3000' # option
+    config.scheme          = 'http'
+    config.health_path     = 'health' # option
+    config.health_response = 'OK' # option
+    config.health_headers  = '{"Content-Type" => "text/plain"}' # option
+    config.info_path       = 'info' # option
+    config.info_response   = '{ "author" => "Victor", "language" => "Ruby" }'
 end
 
 # Register Instance
@@ -19,8 +18,7 @@ EurekaRuby.executor.run(:register)
 # Keep Living
 Thread.new do
   loop do
-    executor = EurekaRuby.executor
-    executor.run(:send_heartbeat)
+    EurekaRuby.executor.run(:send_heartbeat)
     sleep 30
   end
 end

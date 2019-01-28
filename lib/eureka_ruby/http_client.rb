@@ -31,7 +31,8 @@ module EurekaRuby
     private
 
     def request(path)
-      yield("#{base}#{path}")
+      response = yield("#{base}#{path}")
+      raise "Request not OK, response status #{response.status}" unless [200, 204].include? response.status
     end
   end
 end

@@ -6,6 +6,11 @@
 2. bundle 安装 gem
 3. rails s 启动服务
 
+## 1月28日更新
+
+* 使用 `http` gem 代替 Ruby build-in 的 `NET::HTTP` 库
+* 支持 https
+
 ## 1月26日更新
 
 * 使用 middleware 实现了 health 和 info
@@ -35,9 +40,3 @@ EurekaRuby.executor.run(:send_heartbeat)
 * Register new application instance
 * De-register application instance
 * Send application instance heartbeat
-
-## BUG
-
-在 `config/initializers/rack_heartbeat.rb` 中以 thread 的方式保持心跳，启用 `rails console` 会为心跳打开单独的进程和另外一个莫名奇妙的进程，并且退出 console 的时候，这两个进程不会被关闭。
-
-**执行 `rails server` 的时候并不会出现这个问题。**
