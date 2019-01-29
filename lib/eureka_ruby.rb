@@ -1,7 +1,7 @@
 require 'forwardable'
 require 'eureka_ruby/railtie' if defined?(Rails)
-require 'eureka_ruby/health'
-require 'eureka_ruby/info'
+require 'eureka_ruby/middleware/health'
+require 'eureka_ruby/middleware/info'
 require 'eureka_ruby/configuration'
 require 'eureka_ruby/executor'
 
