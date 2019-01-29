@@ -7,7 +7,7 @@ module EurekaRuby
     def call(env)
       if env['PATH_INFO'] == "/#{info_path}"
         NewRelic::Agent.ignore_transaction if defined? NewRelic
-        [200, { 'Content-Type' => 'application/json' }, [info_response]]
+        [200, { 'Content-Type' => 'application/json' }, [info_response.to_json]]
       else
         @app.call(env)
       end

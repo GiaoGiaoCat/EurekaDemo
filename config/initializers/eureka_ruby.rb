@@ -7,9 +7,9 @@ EurekaRuby.configure do |config|
     config.scheme          = 'http'
     config.health_path     = 'health' # option
     config.health_response = 'OK' # option
-    config.health_headers  = '{"Content-Type" => "text/plain"}' # option
+    config.health_headers  = { "Content-Type" => "text/plain" } # option
     config.info_path       = 'info' # option
-    config.info_response   = '{ "author" => "Victor", "language" => "Ruby" }'
+    config.info_response   = { "author" => "Victor", "language" => "Ruby" }
 end
 
 # Register Instance
