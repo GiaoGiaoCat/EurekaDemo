@@ -6,6 +6,10 @@
 2. bundle 安装 gem
 3. rails s 启动服务
 
+## 1月29日更新
+
+* 重新组织 middleware 的位置
+
 ## 1月28日更新
 
 * 使用 `http` gem 代替 Ruby build-in 的 `NET::HTTP` 库
